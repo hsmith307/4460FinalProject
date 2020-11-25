@@ -59,11 +59,11 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("songattributes4.csv", function(error, songs) {
+d3.csv("popsongs3.csv", function(error, songs) {
 
   // Extract the list of dimensions and create a scale for each.
   x.domain(dimensions = d3.keys(songs[0]).filter(function(d) {
-    return d != "Index" && (y[d] = d3.scale.linear()
+    return d != "Index" && d != "Title" && d != "Artist" && d != "Top Genre" && (y[d] = d3.scale.linear()
         .domain(d3.extent(songs, function(p) { return +p[d]; }))
         .range([height, 0]));
   }));
@@ -156,19 +156,20 @@ function brushstart() {
 // Handles a brush event, toggling the display of foreground lines.
 function brush() {
   var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
-      extents = actives.map(function(p) { return y[p].brush.extent(); });
+      extents = actives.map(function(p) {
+        return y[p].brush.extent(); });
   foreground.style("display", function(d) {
     return actives.every(function(p, i) {
+        // this is where you can display the song, but it is so slow and awful right now
+        document.getElementById('song-display').innerHTML += "" + d.Title;
+        console.log(d.Title)
       return extents[i][0] <= d[p] && d[p] <= extents[i][1];
     }) ? null : "none";
   });
 }
 
 </script>
-
-<div id="song-display">
-
-</div>
+<p id="song-display"></p>
 </body>
 
 
