@@ -165,24 +165,14 @@ function brush() {
   foreground.style("display", function(d) {
     return actives.every(function(p, i) {
         // Create the playlist of the songs highlighted to display to the user
-        // var playlist = "";
-        // // the problem is it now won't show more than one song at a time, I am trying to concatonate it and it isn't working, it's prob bc of a silly mistake I am not noticing
-        // if (extents[i][0] <= d[p] && d[p] <= extents[i][1]) {
-        //   var finalPlaylist = "";
-        //   playlist += d.Title + "- " + d.Artist + ",";
-        //   var playlistCleaned = playlist.split(",");
-        //   //console.log(playlistCleaned);
-        //   document.getElementById('song-display').innerHTML = playlistCleaned;
-        //   for (var i = 1; i < playlistCleaned.length; i++) {
-        //     if (playlistCleaned[i] == playlistCleaned[i - 1]) {
-        //       // do nothing, keep going
-        //     } else {
-        //       finalPlaylist += playlistCleaned[i]; 
-        //     }
-        //   }
-        //   console.log(finalPlaylist);
-        //   document.getElementById('song-display').innerHTML += finalPlaylist;
-        // }
+        var playlist = "";
+        //var finalPlaylist = "";
+        // // the problem is it says each song way more than one time
+        if (extents[i][0] <= d[p] && d[p] <= extents[i][1]) {
+          playlist += d.Title + " - " + d.Artist;
+          document.getElementById('song-display').innerHTML += playlist;
+          console.log(playlist);
+        }
       return extents[i][0] <= d[p] && d[p] <= extents[i][1];
     }) ? null : "none";
   });
