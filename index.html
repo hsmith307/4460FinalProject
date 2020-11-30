@@ -136,6 +136,7 @@
     function brushstart() {
       // this function is called anytime you make a new brush or move an old one
       console.log("starting a new brush");
+      //document.getElementById('song-display').innerHTML = "";
       d3.event.sourceEvent.stopPropagation();
     }
     // list to hold song names already added
@@ -148,20 +149,18 @@
             return y[p].brush.extent(); });
       foreground.style("display", function(d) {
         return actives.every(function(p, i) {
-
             // Create the playlist of the songs highlighted to display to the user
             var playlist = "";
 
-            // // the problem is it says each song way more than one time - I believe I fixed this issue
           if (extents[i][0] <= d[p] && d[p] <= extents[i][1]) {
               playlist += d.Title + " - " + d.Artist;
               song = d.Title + " - " + d.Artist;
               if (list.includes(song) == false) {
-                document.getElementById('song-display').innerHTML += playlist + " ";
-                console.log(playlist);
+                document.getElementById('song-display').innerHTML += playlist + " " + "<br>";
+                //console.log(playlist);
               }
               list.push(song);
-              console.log(list);
+              //console.log(list);
             }
           return extents[i][0] <= d[p] && d[p] <= extents[i][1];
         }) ? null : "none";
@@ -169,6 +168,8 @@
     }
 
       </script>
+
+      <h2>Playlist:</h2>
 
       <!-- The HTML element that will display the playlist of songs highlighted in the vis -->
       <p id="song-display"></p>
