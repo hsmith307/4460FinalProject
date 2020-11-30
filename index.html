@@ -154,6 +154,9 @@ function path(d) {
 }
 
 function brushstart() {
+  //helps a bit but doesn't entirely fix problem of not removing song names/artisits from a previous brush when starting a new one
+  document.getElementById('song-display').innerHTML = "";
+  list = [];
   d3.event.sourceEvent.stopPropagation();
 }
 // list to hold song names already added
@@ -173,7 +176,7 @@ function brush() {
           playlist += d.Title + " - " + d.Artist;
           song = d.Title + " - " + d.Artist;
           if (list.includes(song) == false) {
-             document.getElementById('song-display').innerHTML += playlist + " ";
+             document.getElementById('song-display').innerHTML += playlist + " " + "<br>";
              console.log(playlist);
           }
           list.push(song);
