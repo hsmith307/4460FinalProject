@@ -47,7 +47,7 @@
 
       // Extract the list of dimensions and create a scale for each.
       x.domain(dimensions = d3.keys(songs[0]).filter(function(d) {
-        return d != "Index" && d != "Title" && d != "Artist" && d != "Top Genre" && (y[d] = d3.scale.linear()
+        return d != "Index" && d != "Title" && d != "Artist" && d != "Top Genre" && d != "Year" && (y[d] = d3.scale.linear()
             .domain(d3.extent(songs, function(p) { return +p[d]; }))
             .range([height, 0]));
       }));
