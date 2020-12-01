@@ -1,56 +1,112 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-
-h1 {
-    font-size: 50px;
-    font-family: 'Source Sans Pro', sans-serif;
-    text-align: center;
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,600);
+body {
+  font-size: 14px;
+  font-family: "Source Code Pro", Consolas, monaco, monospace;
+  margin: 20px auto 20px;
+  width: 960px;
+  line-height: 1.45em;
+}
+a {
+  color: #454545;
+}
+a:hover {
+  color: #000;
+}
+ul {
+  margin: 0 20px;
+  padding: 0;
+}
+.dark {
+  background: #222;
+}
+#example {
+  min-height: 300px;
+  margin: 12px 0;
+}
+p {
+  width: 560px;
+}
+pre {
+  color: #444;
+  font-family: Ubuntu Mono, Monaco, monospace;
+  padding: 4px 8px;
+  background: #f2f2f2;
+  border: 1px solid #ccc;
+}
+h1 small {
+  font-weight: normal;
+  font-size: 0.5em;
+}
+h3 {
+  margin-top: 40px;
+}
+.float {
+  float: left;
+}
+.centered {
+  text-align: center;
+}
+.hide {
+  display: none;
+}
+input {
+  font-size: 16px;
 }
 
-h2 {
-    font-size: 25px;
-    font-family: 'Montserrat', sans-serif;
-    text-align: center;
+/* data table styles */
+  #grid { height: 240px; }
+  .row, .header { clear: left; font-size: 11px; line-height: 24px; height: 24px; }
+  .row:nth-child(odd) { background: rgba(0,0,0,0.05); }
+  .header { font-weight: bold; }
+  .cell { float: left; overflow: hidden; white-space: nowrap; width: 160px; height: 18px; }
+  .col-0 { width: 120px; }
+
+  
+/* parcoords styles */
+.parcoords > svg, .parcoords > canvas { 
+  font: 11px "Source Code Pro", Consolas, monaco, monospace;
+  position: absolute;
+}
+.parcoords > canvas {
+  pointer-events: none;
 }
 
-svg {
-    font: 10px sans-serif;
-  }
-  
-  .background path {
-    fill: none;
-    stroke: #ddd;
-    shape-rendering: crispEdges;
-  }
-  
-  .foreground path {
-    fill: none;
-    stroke: rgb(182, 45, 129);
-  }
-  
-  .brush .extent {
-    fill-opacity: .3;
-    stroke: #fff;
-    shape-rendering: crispEdges;
-  }
-  
-  .axis line,
-  .axis path {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-  }
-  
-  .axis text {
-    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-    cursor: move;
-  }
+.parcoords text.label {
+  cursor: default;
+}
 
-  /* formatting the songs in the playlist */
-  p {
-    color: black;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 20px;
-    text-align: center;
-  }
-
+.parcoords rect.background {
+  fill: transparent;
+}
+.parcoords rect.background:hover {
+  fill: rgba(120,120,120,0.2);
+}
+.parcoords .resize rect {
+  fill: rgba(0,0,0,0.1);
+}
+.parcoords rect.extent {
+  fill: rgba(255,255,255,0.25);
+  stroke: rgba(0,0,0,0.6);
+}
+.parcoords .axis line, .parcoords .axis path {
+  fill: none;
+  stroke: #454545;
+  shape-rendering: crispEdges;
+}
+.parcoords canvas {
+  opacity: 1;
+  -moz-transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+}
+.parcoords canvas.faded {
+  opacity: 0.25;
+}
+.parcoords {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
