@@ -1,9 +1,13 @@
 <!doctype html>
 
-<title>Linking to Data Table</title> 
-<!-- http://syntagmatic.github.com/parallel-coordinates/ -->
-<link rel="stylesheet" type="text/css" href="styles.css">
+<head>
 
+  <title>Pop Songs</title> 
+  <!-- http://syntagmatic.github.com/parallel-coordinates/ -->
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
 <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
 <script src="d3.parcoords.js"></script>
 <script src="divgrid.js"></script>
@@ -17,14 +21,12 @@ var green_to_blue = d3.scale.linear()
   .range(["#7AC143", "#00B0DD"])
   .interpolate(d3.interpolateLab);
 
-var color = function(d) { return green_to_blue(d['Length of Day (hours)']); };
-
 var parcoords = d3.parcoords()("#example")
-  .color(color)
+  .color('grey')
   .alpha(0.4);
 
 // load csv file and create the chart
-d3.csv('popsongsformat2.csv', function(data) {
+d3.csv('popsongsformat3.csv', function(data) {
   parcoords
     .data(data)
     .render()
@@ -33,7 +35,7 @@ d3.csv('popsongsformat2.csv', function(data) {
   // create data table, row hover highlighting
   var grid = d3.divgrid();
   d3.select("#grid")
-    .datum(data.slice(0,10))
+    .datum(data.slice(0,20))
     .call(grid)
     .selectAll(".row")
     .on({
@@ -44,7 +46,7 @@ d3.csv('popsongsformat2.csv', function(data) {
   // update data table on brush event
   parcoords.on("brush", function(d) {
     d3.select("#grid")
-      .datum(d.slice(0,10))
+      .datum(d.slice(0,70))
       .call(grid)
       .selectAll(".row")
       .on({
@@ -54,3 +56,4 @@ d3.csv('popsongsformat2.csv', function(data) {
   });
 });
 </script>
+</body>
