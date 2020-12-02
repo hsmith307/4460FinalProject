@@ -47,20 +47,6 @@ var types = {
 
 var dimensions = [
   {
-    key: "Title",
-    description: "Title",
-    type: types["String"],
-    axis: d3.axisLeft()
-      .tickFormat(function(d,i) {
-        return d;
-      })
-  },
-  {
-    key: "Artist",
-    description: "Artist",
-    type: types["String"]
-  },
-  {
     key: "Year",
     description: "Year",
     type: types["Number"]
@@ -97,7 +83,7 @@ var xscale = d3.scalePoint()
     .domain(d3.range(dimensions.length))
     .range([0, width]);
 
-var yAxis = d3.axisLeft();
+var yAxis = d3.axisLeft().tickFormat(d3.format("d"));
 
 var container = d3.select("body").append("div")
     .attr("class", "parcoords")
