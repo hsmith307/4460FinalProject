@@ -116,8 +116,9 @@ var canvas = container.append("canvas")
     .style("width", width + "px")
     .style("height", height + "px")
     .style("margin-top", margin.top + "px")
-    .style("margin-left", margin.left + "px")
-    .style("margin-top", -1000 + "px");
+    .style("margin-left", margin.left + "px");
+    // this is the only way to shift the lines up but it still doesn't go all the way up
+    //.style("margin-top", -1000 + "px")
 
 
 var ctx = canvas.node().getContext("2d");
