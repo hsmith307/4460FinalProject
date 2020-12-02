@@ -77,86 +77,20 @@ var dimensions = [
     description: "Energy",
   },
   {
-    key: "pl_orbeccen",
-    description: "Planet Eccentricity",
+    key: "Danceability",
+    description: "Danceability",
     type: types["Number"]
   },
   {
-    key: "pl_orbincl",
-    description: "Planet Inclination",
+    key: "Loudness (dB)",
+    description: "Loudness (dB)",
     type: types["Number"]
   },
   {
-    key: "pl_bmassj",
-    description: "Mass in Jupiters",
+    key: "Popularity",
+    description: "Popularity",
     type: types["Number"]
   },
-  {
-    key: "pl_rade",
-    description: "Planet Radius in Earth Radii",
-    type: types["Number"]
-  },
-  {
-    key: "pl_eqt",
-    description: "Planet Equilibrium Temperature (K)",
-    type: types["Number"]
-  },
-  {
-    key: "pl_imppar",
-    description: "Impact Parameter",
-    type: types["Number"]
-  },
-  {
-    key: "pl_trandep",
-    description: "Transit Depth (%)",
-    type: types["Number"]
-  },
-  {
-    key: "pl_trandur",
-    description: "Transit Duration (days)",
-    type: types["Number"]
-  },
-  {
-    key: "pl_ratror",
-    description: "Planet-Star Radius Ratio",
-    type: types["Number"]
-  },
-  {
-    key: "st_spstr",
-    description: "Star Spectral Type",
-    type: types["String"],
-    axis: d3.axisLeft()
-      .tickFormat(function(d,i) {
-        if (i % 4) return;
-        return d;
-      })
-  },
-  {
-    key: "pl_locale",
-    type: types["String"],
-    axis: d3.axisLeft()
-      .tickFormat(function(d,i) {
-        if (d == "Multiple Locales") return "Multiple";
-        return d;
-      })
-
-  },
-  {
-    key: "pl_disc",
-    description: "Year of Discovery",
-    type: types["Date"]
-  },
-  {
-    key: "pl_facility",
-    description: "Facility",
-    type: types["String"],
-    domain: ["Kepler", "La Silla Observatory", "K2", "W. M. Keck Observatory", "SuperWASP", "Multiple Observatories", "HATNet", "Haute-Provence Observatory", "Anglo-Australian Telescope", "OGLE", "Lick Observatory", "HATSouth", "CoRoT", "McDonald Observatory", "Okayama Astrophysical Observatory", "MOA", "Bohyunsan Optical Astronomical Observatory", "Las Campanas Observatory", "SuperWASP-South", "Roque de los Muchachos Observatory", "Paranal Observatory", "Gemini Observatory", "KELT", "Subaru Telescope", "Thueringer Landessternwarte Tautenburg", "XO", "Multiple Facilities", "Hubble Space Telescope", "Fred Lawrence Whipple Observatory", "TrES", "kepler", "KELT-South", "Spitzer Space Telescope", "Arecibo Observatory", "United Kingdom Infrared Telescope", "Large Binocular Telescope Observatory", "Xinglong Station", "Cerro Tololo Inter-American Observatory", "Palomar Observatory", "SuperWASP-North", "Qatar", "Teide Observatory", "European Southern Observatory", "Leoncito Astronomical Complex", "Infrared Survey Facility", "KMTNet", "Parkes Observatory", "Apache Point Observatory", "Oak Ridge Observatory", "MEarth Project", "Yunnan Astronomical Observatory", "Kitt Peak National Observatory"],
-    axis: d3.axisRight()
-      .tickFormat(function(d,i) {
-        return d;
-      })
-  }
-
 ];
 
 
