@@ -1,7 +1,11 @@
 
 <!DOCTYPE html>
-<meta charset="utf-8">
-<title>Pop Song Playlist</title>
+
+<head>
+  <meta charset="utf-8">
+  <title>Pop Song Playlist</title>
+</head>
+
 <body>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://bl.ocks.org/syntagmatic/raw/3341641/render-queue.js"></script>
@@ -44,8 +48,8 @@ var types = {
 
 var dimensions = [
   {
-    key: "pl_discmethod",
-    description: "Discovery Method",
+    key: "Title",
+    description: "Title",
     type: types["String"],
     axis: d3.axisLeft()
       .tickFormat(function(d,i) {
@@ -53,26 +57,24 @@ var dimensions = [
       })
   },
   {
-    key: "pl_letter",
-    description: "Planet Letter",
+    key: "Artist",
+    description: "Artist",
     type: types["String"]
   },
   {
-    key: "pl_pnum",
-    description: "Number of Planets in System",
+    key: "Year",
+    description: "Year",
     type: types["Number"]
   },
   {
-    key: "pl_orbper",
+    key: "Beats Per Minute (BPM)",
     type: types["Number"],
-    description: "Planet Orbital Period",
-    scale: d3.scaleLog().range([innerHeight, 0])
+    description: "Beats Per Minute (BPM)",
   },
   {
-    key: "pl_orbsmax",
+    key: "Energy",
     type: types["Number"],
-    description: "Planet Semi-Major Axis",
-    scale: d3.scaleLog().range([innerHeight, 0])
+    description: "Energy",
   },
   {
     key: "pl_orbeccen",
@@ -154,28 +156,7 @@ var dimensions = [
         return d;
       })
   }
-  /*
-  {
-    key: "pl_telescope",
-    description: "Telescope",
-    type: types["String"],
-    axis: d3.axisRight()
-      .tickFormat(function(d,i) {
-        return d;
-      })
-  }
-  */
-  /*
-  {
-    key: "pl_instrument",
-    description: "Instrument",
-    type: types["String"],
-    axis: d3.axisRight()
-      .tickFormat(function(d,i) {
-        return d;
-      })
-  }
-  */
+
 ];
 
 
@@ -400,3 +381,4 @@ function d3_functor(v) {
   return typeof v === "function" ? v : function() { return v; };
 };
 </script>
+</body>
