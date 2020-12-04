@@ -90,11 +90,11 @@ var container = d3.select("body").append("div")
     .style("width", width + margin.left + margin.right + "px")
     .style("height", height + margin.top + margin.bottom + "px");
 
-var svg = container.append("svg")
+  var dog = container.append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("height", 30)
   .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
 var canvas = container.append("canvas")
     .attr("width", width * devicePixelRatio)
@@ -102,9 +102,21 @@ var canvas = container.append("canvas")
     .style("width", width + "px")
     .style("height", height + "px")
     .style("margin-top", margin.top + "px")
-    .style("margin-left", margin.left + "px");
+    .style("margin-left", margin.left + "px")
     // this is the only way to shift the lines up but it still doesn't go all the way up
-    //.style("margin-top", -1000 + "px")
+    .style("margin-top",  -13 + "px")
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .style("margin-top",  -1000 + "px")
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .style("margin-top", 0 + "px")
+
+
+
+//var output = container.append("pre");
 
 
 var ctx = canvas.node().getContext("2d");
