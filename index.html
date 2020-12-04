@@ -9,7 +9,7 @@
 <body>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://bl.ocks.org/syntagmatic/raw/3341641/render-queue.js"></script>
-<link rel="stylesheet" href="style.css"></link>
+<link rel="stylesheet" href="styles.css"></link>
 
 <h1>Pop Song Playlist Creator</h1>
 
@@ -90,11 +90,11 @@ var container = d3.select("body").append("div")
     .style("width", width + margin.left + margin.right + "px")
     .style("height", height + margin.top + margin.bottom + "px");
 
-var dog = container.append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", 30)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+// var dog = container.append("svg")
+//     .attr("width", width + margin.left + margin.right)
+//     .attr("height", 0)
+//   .append("g")
+//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
 var canvas = container.append("canvas")
     .attr("width", width * devicePixelRatio)
@@ -104,7 +104,7 @@ var canvas = container.append("canvas")
     .style("margin-top", margin.top + "px")
     .style("margin-left", margin.left + "px")
     // this is the only way to shift the lines up but it still doesn't go all the way up
-    .style("margin-top",  -13 + "px")
+    .style("margin-top",  23 + "px")
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
