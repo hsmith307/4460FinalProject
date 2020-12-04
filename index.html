@@ -96,28 +96,22 @@ var dog = container.append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
+var svg = container.append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .style("margin-top", 0 + "px")
+
 var canvas = container.append("canvas")
     .attr("width", width * devicePixelRatio)
     .attr("height", height * devicePixelRatio)
     .style("width", width + "px")
     .style("height", height + "px")
-    .style("margin-top", margin.top + "px")
+    .style("margin-top", "-100px")
     .style("margin-left", margin.left + "px")
-    // this is the only way to shift the lines up but it still doesn't go all the way up
-    .style("margin-top",  -13 + "px")
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .style("margin-top",  -1000 + "px")
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-    .style("margin-top", 0 + "px")
-
-
-
-//var output = container.append("pre");
-
+var output = container.append("pre");
 
 var ctx = canvas.node().getContext("2d");
 ctx.globalCompositeOperation = 'darken';
@@ -183,10 +177,9 @@ d3.csv("popsongsformat4.csv", function(error, data) {
       .attr("class", "brush")
       .each(function(d) {
         d3.select(this).call(d.brush = d3.brushY()
-          .extent([[-10,0], [10,height]])
+          .extent([[0, 0], [0, height]])
           .on("start", brushstart)
-          .on("brush", brush)
-          .on("end", brush)
+          .on("brush end", brush)
         )
       })
     .selectAll("rect")
@@ -195,7 +188,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
 
   d3.selectAll(".axis.pl_discmethod .tick text")
     .style("fill", 'grey');
-    
+
   output.text(d3.tsvFormat(data.slice(0,24)));
 
   function project(d) {
@@ -234,7 +227,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
         }
         return;
       }
-      
+
       if (i == 0) {
         ctx.moveTo(p[0],p[1]);
         return;
@@ -274,7 +267,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
         return true;
       }
     });
-    
+
     ctx.clearRect(0,0,width,height);
     ctx.globalAlpha = d3.min([0.85/Math.pow(selected.length,0.3),1]);
     render(selected);
