@@ -12,7 +12,7 @@
 <script src="d3.parcoords.js"></script>
 <script src="divgrid.js"></script>
 
-<div id="example" class="parcoords"></div>
+<div id="pcp" class="parcoords"></div>
 <div id="grid"></div>
 
 <script id="brushing">// quantitative colour scale
@@ -21,8 +21,8 @@ var green_to_blue = d3.scale.linear()
   .range(["#7AC143", "#00B0DD"])
   .interpolate(d3.interpolateLab);
 
-var parcoords = d3.parcoords()("#example")
-  .color('grey')
+var parcoords = d3.parcoords()("#pcp")
+  .color('green')
   .alpha(0.4);
 
 // load csv file and create the chart
