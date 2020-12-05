@@ -1,26 +1,40 @@
 
 <!DOCTYPE html>
 
+<!-- Head -->
 <head>
   <meta charset="utf-8">
   <title>Pop Song Playlist</title>
 </head>
 
+<!-- Body -->
 <body>
+
+<!-- Load d3 -->
 <script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Load Render Queue -->
 <script src="https://bl.ocks.org/syntagmatic/raw/3341641/render-queue.js"></script>
+
+<!-- Load bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<!-- Load CSS style sheet -->
 <link rel="stylesheet" href="styles.css"></link>
 
+<!-- Set the title -->
 <h1 style="text-align: center">Pop Song Playlist Creator</h1>
 
 <span></span>
 
+<!-- Create the table that will hold the playlist as it updates based on user input -->
 <table class="table" id="split" style="margin-left: auto; margin-right: auto">
     <thead></thead>
     <tbody></tbody>
 </table>
 
+<!-- Script that controls the Parallel Coordinate Plot and user interaction, as well as
+updates the table -->
 <script>
 var margin = {top: 10, right: 110, bottom: 20, left: 188},
     width = document.body.clientWidth - margin.left - margin.right,
@@ -29,6 +43,7 @@ var margin = {top: 10, right: 110, bottom: 20, left: 188},
 
 var devicePixelRatio = window.devicePixelRatio || 1;
 
+// Labels for the PCP axes
 var types = {
   "Number": {
     key: "Number",
@@ -53,6 +68,7 @@ var types = {
   }
 };
 
+// Labels for the table
 var dimensions = [
   {
     key: "Year",
@@ -86,24 +102,21 @@ var dimensions = [
   },
 ];
 
-
+// Create the scale for the x axis
 var xscale = d3.scalePoint()
     .domain(d3.range(dimensions.length))
     .range([0, width]);
 
+// Create the scale for the y axis
 var yAxis = d3.axisLeft().tickFormat(d3.format("d"));
 
+// Create the container
 var container = d3.select("span").append("div")
     .attr("class", "parcoords")
     .style("width", width + margin.left + margin.right + "px")
     .style("height", height + margin.top + margin.bottom + "px");
 
-// var dog = container.append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", 0)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-
+// append the canvas to the container
 var canvas = container.append("canvas")
     .attr("width", width * devicePixelRatio)
     .attr("height", height * devicePixelRatio)
@@ -114,6 +127,7 @@ var canvas = container.append("canvas")
     // this is the only way to shift the lines up but it still doesn't go all the way up
     .style("margin-top",  50 + "px")
 
+// Create the svg
 var svg = d3.select("span").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -122,25 +136,20 @@ var svg = d3.select("span").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .style("margin-top", 0 + "px")
 
-
-
-//var output = container.append("pre");
-
-
 var ctx = canvas.node().getContext("2d");
 ctx.globalCompositeOperation = 'darken';
 ctx.globalAlpha = 0.15;
 ctx.lineWidth = 1.5;
 ctx.scale(devicePixelRatio, devicePixelRatio);
 
-// var output = d3.select("span").append("pre");
-
+// Create the axes
 var axes = svg.selectAll(".axis")
     .data(dimensions)
   .enter().append("g")
     .attr("class", function(d) { return "axis " + d.key.replace(/ /g, "_"); })
     .attr("transform", function(d,i) { return "translate(" + xscale(i) + ")"; });
 
+// Read the data from the file
 d3.csv("popsongsformat4.csv", function(error, data) {
   if (error) throw error;
 
@@ -191,6 +200,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
   ctx.globalAlpha = d3.min([1.15/Math.pow(data.length,0.3),1]);
   render(data);
 
+  // label the axes
   axes.append("g")
       .each(function(d) {
         var renderAxis = "axis" in d
@@ -221,8 +231,6 @@ d3.csv("popsongsformat4.csv", function(error, data) {
   d3.selectAll(".axis.pl_discmethod .tick text")
     .style("fill", 'grey');
 
-  // output.text(d3.tsvFormat(data));
-
   function project(d) {
     return dimensions.map(function(p,i) {
       // check if data element has property and contains a value
@@ -235,6 +243,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     });
   };
 
+  // Draw the lines on the PCP
   function draw(d) {
     ctx.strokeStyle = 'green';
     ctx.beginPath();
@@ -270,6 +279,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     ctx.stroke();
   }
 
+  // This function is called when a brush is started
   function brushstart() {
     d3.event.sourceEvent.stopPropagation();
   }
@@ -290,6 +300,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
         });
       });
 
+    // determine which song's lines are selected
     var selected = data.filter(function(d) {
       if (actives.every(function(active) {
           var dim = active.dimension;
@@ -303,8 +314,6 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     ctx.clearRect(0,0,width,height);
     ctx.globalAlpha = d3.min([0.85/Math.pow(selected.length,0.3),1]);
     render(selected);
-
-    // output.text(d3.tsvFormat(selected));
 
     d3.select("tbody").html("");
 
