@@ -22,8 +22,8 @@
 
 <script>
 var margin = {top: 10, right: 110, bottom: 20, left: 188},
-    width = document.body.clientWidth - margin.left - margin.right,
-    height = 740 - margin.top - margin.bottom,
+    width = 1000 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom,
     innerHeight = height - 2;
 
 var devicePixelRatio = window.devicePixelRatio || 1;
@@ -175,9 +175,13 @@ d3.csv("popsongsformat4.csv", function(error, data) {
       .data(data).enter().append("tr")
 
   var td = tr.selectAll("td")
-    .data(d => d3.values(d))
-    .enter().append("td")
-    .text(d => d)
+      .data(d => d3.values(d))
+      .enter().append("td")
+      .text(d => d)
+
+  d3.selectAll("td")
+      .filter((d, i) => i % columns.length > 1)
+      .attr("style", "text-align: center");
 
   var render = renderQueue(draw).rate(30);
 
@@ -309,6 +313,10 @@ d3.csv("popsongsformat4.csv", function(error, data) {
       .data(d => d3.values(d))
       .enter().append("td")
       .text(d => d)
+
+    d3.selectAll("td")
+        .filter((d, i) => i % columns.length > 1)
+        .attr("style", "text-align: center");
   }
 });
 
