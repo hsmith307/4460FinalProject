@@ -199,7 +199,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
   d3.selectAll(".axis.pl_discmethod .tick text")
     .style("fill", 'grey');
     
-  output.text(d3.tsvFormat(data.slice(0,24)));
+  output.text(d3.tsvFormat(data));
 
   function project(d) {
     return dimensions.map(function(p,i) {
