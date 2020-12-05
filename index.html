@@ -22,8 +22,8 @@
 
 <script>
 var margin = {top: 10, right: 110, bottom: 20, left: 188},
-    width = 1000 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom,
+    width = document.body.clientWidth - margin.left - margin.right,
+    height = 740 - margin.top - margin.bottom,
     innerHeight = height - 2;
 
 var devicePixelRatio = window.devicePixelRatio || 1;
