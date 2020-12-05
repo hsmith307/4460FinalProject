@@ -169,7 +169,8 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     dim.scale.domain(dim.domain);
   });
 
-  d3.select("thead").selectAll("th").data(columns).enter().append("th").text(d => d);
+  d3.select("thead").selectAll("th").data(columns).enter()
+      .append("th").text(d => d).attr("style", "padding-left: 20px; padding-right: 20px");
 
   var tr = d3.select("tbody").selectAll("tr")
       .data(data).enter().append("tr")
