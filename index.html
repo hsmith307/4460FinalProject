@@ -7,14 +7,16 @@
    <style>
     h1 {text-align: center;}
    </style>
+   <script src="https://d3js.org/d3.v4.js"></script>
+   <script src="https://bl.ocks.org/syntagmatic/raw/3341641/render-queue.js"></script>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   
+   <link rel="stylesheet" href="styles.css"></link>
 </head>
 
 <body>
-<script src="https://d3js.org/d3.v4.js"></script>
-<script src="https://bl.ocks.org/syntagmatic/raw/3341641/render-queue.js"></script>
-<link rel="stylesheet" href="styles.css"></link>
+  <h1>Pop Song Playlist Creator</h1>
 
-<h1>Pop Song Playlist Creator</h1>
 
 <script>
 var margin = {top: 10, right: 110, bottom: 20, left: 188},
@@ -93,12 +95,6 @@ var container = d3.select("body").append("div")
     .style("width", width + margin.left + margin.right + "px")
     .style("height", height + margin.top + margin.bottom + "px");
 
-// var dog = container.append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", 0)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-
 var canvas = container.append("canvas")
     .attr("width", width * devicePixelRatio)
     .attr("height", height * devicePixelRatio)
@@ -107,12 +103,12 @@ var canvas = container.append("canvas")
     .style("margin-top", margin.top + "px")
     .style("margin-left", margin.left + "px")
     // this is the only way to shift the lines up but it still doesn't go all the way up
-    .style("margin-top",  23 + "px")
+    .style("margin-top",  50 + "px")
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .style("margin-top",  -1000 + "px")
+    .style("margin-top",  -700 + "px")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .style("margin-top", 0 + "px")
@@ -128,7 +124,16 @@ ctx.globalAlpha = 0.15;
 ctx.lineWidth = 1.5;
 ctx.scale(devicePixelRatio, devicePixelRatio);
 
-var output = d3.select("body").append("pre");
+//var output = d3.select("body").append("pre");
+
+var table = d3.select("body").append("div").attr("class", "row")
+            .append("div").attr("class", "col-12")
+            .append("table").attr("class", "table")
+            .style("margin-top",  0 + "px")
+
+var thead = d3.select("table").append("thead");
+
+var tablebody = table.append("tbody");
 
 var axes = svg.selectAll(".axis")
     .data(dimensions)
@@ -198,8 +203,34 @@ d3.csv("popsongsformat4.csv", function(error, data) {
 
   d3.selectAll(".axis.pl_discmethod .tick text")
     .style("fill", 'grey');
+
+  console.log(data);
+  count = 0;
+  count1 = 0;
+  thead.append("th").text("Title");
+  thead.append("th").text("Artist");
+  thead.append("th").text("Year");
+  thead.append("th").text("Beats Per Minute (BPM)");
+  thead.append("th").text("Energy");
+  thead.append("th").text("Danceability");
+  thead.append("th").text("Loudness (dB)");
+  thead.append("th").text("Popularity");
+  for (var dog in data) {
+    console.log(data[dog]["Title"]);
+    var id = "id" + count;
+    tablebody.append("tr").attr("id", id);
+    d3.select("#"+id).append("td").text(data[dog]["Title"]);
+    d3.select("#"+id).append("td").text(data[dog]["Artist"]);
+    d3.select("#"+id).append("td").text(data[dog]["Year"]);
+    d3.select("#"+id).append("td").text(data[dog]["Beats Per Minute (BPM)"]);
+    d3.select("#"+id).append("td").text(data[dog]["Energy"]);
+    d3.select("#"+id).append("td").text(data[dog]["Danceability"]);
+    d3.select("#"+id).append("td").text(data[dog]["Loudness (dB)"]);
+    d3.select("#"+id).append("td").text(data[dog]["Popularity"]);
+    count++;
+  }
     
-  output.text(d3.tsvFormat(data.slice(0,24)));
+  //output.text(d3.tsvFormat(data.slice(0,24)));
 
   function project(d) {
     return dimensions.map(function(p,i) {
@@ -281,8 +312,27 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     ctx.clearRect(0,0,width,height);
     ctx.globalAlpha = d3.min([0.85/Math.pow(selected.length,0.3),1]);
     render(selected);
+    //console.log(selected.slice(0,24));
+    tablebody.remove();
+    tablebody = table.append("tbody");
+    
+    for (var dog in selected) {
+      console.log(data[dog]["Title"]);
+      var id = "id" + count;
+      tablebody.append("tr").attr("id", id);
+      d3.select("#"+id).append("td").text(data[dog]["Title"]);
+      d3.select("#"+id).append("td").text(data[dog]["Artist"]);
+      d3.select("#"+id).append("td").text(data[dog]["Year"]);
+      d3.select("#"+id).append("td").text(data[dog]["Beats Per Minute (BPM)"]);
+      d3.select("#"+id).append("td").text(data[dog]["Energy"]);
+      d3.select("#"+id).append("td").text(data[dog]["Danceability"]);
+      d3.select("#"+id).append("td").text(data[dog]["Loudness (dB)"]);
+      d3.select("#"+id).append("td").text(data[dog]["Popularity"]);
+      count++;
+    }
 
-    output.text(d3.tsvFormat(selected.slice(0,24)));
+
+    //output.text(d3.tsvFormat(selected.slice(0,24)));
   }
 });
 
