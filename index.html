@@ -9,13 +9,14 @@
 <body>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://bl.ocks.org/syntagmatic/raw/3341641/render-queue.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="styles.css"></link>
 
 <h1 style="text-align: center">Pop Song Playlist Creator</h1>
 
 <span></span>
 
-<table id="split" style="margin-left: auto; margin-right: auto">
+<table class="table" id="split" style="margin-left: auto; margin-right: auto">
     <thead></thead>
     <tbody></tbody>
 </table>
@@ -111,12 +112,12 @@ var canvas = container.append("canvas")
     .style("margin-top", margin.top + "px")
     .style("margin-left", margin.left + "px")
     // this is the only way to shift the lines up but it still doesn't go all the way up
-    .style("margin-top",  23 + "px")
+    .style("margin-top",  50 + "px")
 
 var svg = d3.select("span").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .style("margin-top",  -1000 + "px")
+    .style("margin-top",  -700 + "px")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .style("margin-top", 0 + "px")
