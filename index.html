@@ -13,6 +13,13 @@
 
 <h1>Pop Song Playlist Creator</h1>
 
+<span></span>
+
+<table id="split">
+    <thead></thead>
+    <tbody></tbody>
+</table>
+
 <script>
 var margin = {top: 10, right: 110, bottom: 20, left: 188},
     width = document.body.clientWidth - margin.left - margin.right,
@@ -85,7 +92,7 @@ var xscale = d3.scalePoint()
 
 var yAxis = d3.axisLeft().tickFormat(d3.format("d"));
 
-var container = d3.select("body").append("div")
+var container = d3.select("span").append("div")
     .attr("class", "parcoords")
     .style("width", width + margin.left + margin.right + "px")
     .style("height", height + margin.top + margin.bottom + "px");
@@ -106,7 +113,7 @@ var canvas = container.append("canvas")
     // this is the only way to shift the lines up but it still doesn't go all the way up
     .style("margin-top",  23 + "px")
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("span").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .style("margin-top",  -1000 + "px")
@@ -125,7 +132,7 @@ ctx.globalAlpha = 0.15;
 ctx.lineWidth = 1.5;
 ctx.scale(devicePixelRatio, devicePixelRatio);
 
-var output = d3.select("body").append("pre");
+// var output = d3.select("span").append("pre");
 
 var axes = svg.selectAll(".axis")
     .data(dimensions)
@@ -148,10 +155,12 @@ d3.csv("popsongsformat4.csv", function(error, data) {
   });
 
   // type/dimension default setting happens here
+  columns = ["Title", "Artist"];
   dimensions.forEach(function(dim) {
     if (!("domain" in dim)) {
       // detect domain using dimension type's extent function
       dim.domain = d3_functor(dim.type.extent)(data.map(function(d) { return d[dim.key]; }));
+      columns.push(dim.key);
     }
     if (!("scale" in dim)) {
       // use type's default scale for dimension
@@ -159,6 +168,16 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     }
     dim.scale.domain(dim.domain);
   });
+
+  d3.select("thead").selectAll("th").data(columns).enter().append("th").text(d => d);
+
+  var tr = d3.select("tbody").selectAll("tr")
+      .data(data).enter().append("tr")
+
+  var td = tr.selectAll("td")
+    .data(d => d3.values(d))
+    .enter().append("td")
+    .text(d => d)
 
   var render = renderQueue(draw).rate(30);
 
@@ -195,8 +214,8 @@ d3.csv("popsongsformat4.csv", function(error, data) {
 
   d3.selectAll(".axis.pl_discmethod .tick text")
     .style("fill", 'grey');
-    
-  output.text(d3.tsvFormat(data.slice(0,24)));
+
+  // output.text(d3.tsvFormat(data));
 
   function project(d) {
     return dimensions.map(function(p,i) {
@@ -234,7 +253,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
         }
         return;
       }
-      
+
       if (i == 0) {
         ctx.moveTo(p[0],p[1]);
         return;
@@ -274,12 +293,22 @@ d3.csv("popsongsformat4.csv", function(error, data) {
         return true;
       }
     });
-    
+
     ctx.clearRect(0,0,width,height);
     ctx.globalAlpha = d3.min([0.85/Math.pow(selected.length,0.3),1]);
     render(selected);
 
-    output.text(d3.tsvFormat(selected.slice(0,24)));
+    output.text(d3.tsvFormat(selected));
+
+    d3.select("tbody").html("");
+
+    var tr = d3.select("tbody").selectAll("tr")
+        .data(selected).enter().append("tr")
+
+    var td = tr.selectAll("td")
+      .data(d => d3.values(d))
+      .enter().append("td")
+      .text(d => d)
   }
 });
 
