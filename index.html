@@ -298,7 +298,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     ctx.globalAlpha = d3.min([0.85/Math.pow(selected.length,0.3),1]);
     render(selected);
 
-    output.text(d3.tsvFormat(selected));
+    // output.text(d3.tsvFormat(selected));
 
     d3.select("tbody").html("");
 
