@@ -1,18 +1,42 @@
 
 <!DOCTYPE html>
 
+<!-- Head -->
 <head>
   <meta charset="utf-8">
   <title>Pop Song Playlist</title>
 </head>
 
+<!-- Body -->
 <body>
+
+<!-- Load d3 -->
 <script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Load Render Queue -->
 <script src="https://bl.ocks.org/syntagmatic/raw/3341641/render-queue.js"></script>
+
+<!-- Load bootstrap -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<!-- Load CSS style sheet -->
 <link rel="stylesheet" href="styles.css"></link>
 
-<h1>Pop Song Playlist Creator</h1>
+<!-- Set the title -->
+<h1 style="text-align: center">Pop Song Playlist Creator</h1>
 
+<p>Brush/select a range in one or more axes to generate a playlist below!</p>
+
+<span></span>
+
+<!-- Create the table that will hold the playlist as it updates based on user input -->
+<table class="table" id="split" style="margin-left: auto; margin-right: auto">
+    <thead></thead>
+    <tbody></tbody>
+</table>
+
+<!-- Script that controls the Parallel Coordinate Plot and user interaction, as well as
+updates the table -->
 <script>
 var margin = {top: 10, right: 110, bottom: 20, left: 188},
     width = document.body.clientWidth - margin.left - margin.right,
@@ -21,6 +45,7 @@ var margin = {top: 10, right: 110, bottom: 20, left: 188},
 
 var devicePixelRatio = window.devicePixelRatio || 1;
 
+// Labels for the PCP axes
 var types = {
   "Number": {
     key: "Number",
@@ -45,6 +70,7 @@ var types = {
   }
 };
 
+// Labels for the table
 var dimensions = [
   {
     key: "Year",
@@ -78,24 +104,21 @@ var dimensions = [
   },
 ];
 
-
+// Create the scale for the x axis
 var xscale = d3.scalePoint()
     .domain(d3.range(dimensions.length))
     .range([0, width]);
 
+// Create the scale for the y axis
 var yAxis = d3.axisLeft().tickFormat(d3.format("d"));
 
-var container = d3.select("body").append("div")
+// Create the container
+var container = d3.select("span").append("div")
     .attr("class", "parcoords")
     .style("width", width + margin.left + margin.right + "px")
     .style("height", height + margin.top + margin.bottom + "px");
 
-// var dog = container.append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", 0)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-
+// append the canvas to the container
 var canvas = container.append("canvas")
     .attr("width", width * devicePixelRatio)
     .attr("height", height * devicePixelRatio)
@@ -104,20 +127,16 @@ var canvas = container.append("canvas")
     .style("margin-top", margin.top + "px")
     .style("margin-left", margin.left + "px")
     // this is the only way to shift the lines up but it still doesn't go all the way up
-    .style("margin-top",  23 + "px")
+    .style("margin-top",  50 + "px")
 
-var svg = d3.select("body").append("svg")
+// Create the svg
+var svg = d3.select("span").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .style("margin-top",  -1000 + "px")
+    .style("margin-top",  -700 + "px")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .style("margin-top", 0 + "px")
-
-
-
-//var output = container.append("pre");
-
 
 var ctx = canvas.node().getContext("2d");
 ctx.globalCompositeOperation = 'darken';
@@ -125,14 +144,14 @@ ctx.globalAlpha = 0.15;
 ctx.lineWidth = 1.5;
 ctx.scale(devicePixelRatio, devicePixelRatio);
 
-var output = d3.select("body").append("pre");
-
+// Create the axes
 var axes = svg.selectAll(".axis")
     .data(dimensions)
   .enter().append("g")
     .attr("class", function(d) { return "axis " + d.key.replace(/ /g, "_"); })
     .attr("transform", function(d,i) { return "translate(" + xscale(i) + ")"; });
 
+// Read the data from the file
 d3.csv("popsongsformat4.csv", function(error, data) {
   if (error) throw error;
 
@@ -148,10 +167,12 @@ d3.csv("popsongsformat4.csv", function(error, data) {
   });
 
   // type/dimension default setting happens here
+  columns = ["Title", "Artist"];
   dimensions.forEach(function(dim) {
     if (!("domain" in dim)) {
       // detect domain using dimension type's extent function
       dim.domain = d3_functor(dim.type.extent)(data.map(function(d) { return d[dim.key]; }));
+      columns.push(dim.key);
     }
     if (!("scale" in dim)) {
       // use type's default scale for dimension
@@ -160,12 +181,28 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     dim.scale.domain(dim.domain);
   });
 
+  d3.select("thead").selectAll("th").data(columns).enter()
+      .append("th").text(d => d).attr("style", "padding-left: 20px; padding-right: 20px");
+
+  var tr = d3.select("tbody").selectAll("tr")
+      .data(data).enter().append("tr")
+
+  var td = tr.selectAll("td")
+      .data(d => d3.values(d))
+      .enter().append("td")
+      .text(d => d)
+
+  d3.selectAll("td")
+      .filter((d, i) => i % columns.length > 1)
+      .attr("style", "text-align: center");
+
   var render = renderQueue(draw).rate(30);
 
   ctx.clearRect(0,0,width,height);
   ctx.globalAlpha = d3.min([1.15/Math.pow(data.length,0.3),1]);
   render(data);
 
+  // label the axes
   axes.append("g")
       .each(function(d) {
         var renderAxis = "axis" in d
@@ -195,8 +232,6 @@ d3.csv("popsongsformat4.csv", function(error, data) {
 
   d3.selectAll(".axis.pl_discmethod .tick text")
     .style("fill", 'grey');
-    
-  output.text(d3.tsvFormat(data.slice(0,24)));
 
   function project(d) {
     return dimensions.map(function(p,i) {
@@ -210,6 +245,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     });
   };
 
+  // Draw the lines on the PCP
   function draw(d) {
     ctx.strokeStyle = 'green';
     ctx.beginPath();
@@ -234,7 +270,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
         }
         return;
       }
-      
+
       if (i == 0) {
         ctx.moveTo(p[0],p[1]);
         return;
@@ -245,6 +281,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
     ctx.stroke();
   }
 
+  // This function is called when a brush is started
   function brushstart() {
     d3.event.sourceEvent.stopPropagation();
   }
@@ -265,6 +302,7 @@ d3.csv("popsongsformat4.csv", function(error, data) {
         });
       });
 
+    // determine which song's lines are selected
     var selected = data.filter(function(d) {
       if (actives.every(function(active) {
           var dim = active.dimension;
@@ -274,12 +312,24 @@ d3.csv("popsongsformat4.csv", function(error, data) {
         return true;
       }
     });
-    
+
     ctx.clearRect(0,0,width,height);
     ctx.globalAlpha = d3.min([0.85/Math.pow(selected.length,0.3),1]);
     render(selected);
 
-    output.text(d3.tsvFormat(selected.slice(0,24)));
+    d3.select("tbody").html("");
+
+    var tr = d3.select("tbody").selectAll("tr")
+        .data(selected).enter().append("tr")
+
+    var td = tr.selectAll("td")
+      .data(d => d3.values(d))
+      .enter().append("td")
+      .text(d => d)
+
+    d3.selectAll("td")
+        .filter((d, i) => i % columns.length > 1)
+        .attr("style", "text-align: center");
   }
 });
 

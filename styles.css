@@ -1,5 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Raleway&display=swap');
 body {
   min-width: 760px;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+p {
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
 }
 
 .parcoords {
